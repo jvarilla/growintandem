@@ -1,6 +1,7 @@
 package varilla.joseph.growintandem.http
 
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.RoutingContext
 import org.koin.core.KoinComponent
 
 interface HttpRouter :KoinComponent {
@@ -12,12 +13,12 @@ interface HttpRouter :KoinComponent {
   /**
    * Returns all the plants in the system
    */
-  suspend fun getPlantsHandler(): Unit;
+  suspend fun getPlantsHandler(event :RoutingContext): Unit;
 
   /**
    * Returns a plant with a specific id
    */
-  suspend fun getPlantHandler(): Unit;
+  suspend fun getPlantHandler(event :RoutingContext): Unit;
 
 
 

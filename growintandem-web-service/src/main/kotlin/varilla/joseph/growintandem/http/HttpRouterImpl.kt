@@ -1,13 +1,19 @@
 package varilla.joseph.growintandem.http
 
 import io.vertx.core.Vertx
+import io.vertx.core.json.Json
+import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import kotlinx.coroutines.launch
 import io.vertx.ext.web.handler.BodyHandler
+import kotlinx.coroutines.CoroutineDispatcher
 import org.koin.core.KoinComponent
+import varilla.joseph.growintandem.utils.http.sendAsJSONWithStatusCode
+import varilla.joseph.growintandem.utils.models.Plant
+import kotlin.coroutines.CoroutineContext
 
 class HttpRouterImpl(private val vertx : Vertx) : HttpRouter, KoinComponent {
-
   override suspend fun getRouter(): Router {
     val router = Router.router(vertx)
 
@@ -25,15 +31,22 @@ class HttpRouterImpl(private val vertx : Vertx) : HttpRouter, KoinComponent {
         response.end("Hello from Vert.x")
       }
 
-
     return router
   }
 
-  override suspend fun getPlantHandler() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override suspend fun getPlantHandler(event :RoutingContext) {
+    val plant = Plant("123", "Money Tree", 14).toJsonObject()
+    val plants = listOf<JsonObject>(plant, plant, plant)
+    val msg = Json.encodePrettily(plants)
+    event.response().sendAsJSONWithStatusCode(msg, 200)
   }
 
-  override suspend fun getPlantsHandler() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override suspend fun getPlantsHandler(event :RoutingContext) {
+    val plant = Plant("123", "Money Tree", 14).toJsonObject()
+    val msg = Json.encodePrettily(plant)
+    event.response().sendAsJSONWithStatusCode(msg, 200)
   }
+
+
+
 }

@@ -1,10 +1,11 @@
 package varilla.joseph.growintandem
 
 import io.vertx.core.Vertx
-import io.vertx.ext.web.Router
+import io.vertx.ext.web.Route
 import io.vertx.ext.web.RoutingContext
-import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.inject
@@ -16,7 +17,7 @@ import varilla.joseph.growintandem.modules.http.HttpRouterModules
 class MainVerticle : CoroutineVerticle(), KoinComponent {
 
   override suspend fun start() {
-
+    this.coroutineContext
     // Declare modules and build dependency trees
     startKoin {
       modules(listOf<Module>(VertxModule, HttpRouterModules))
@@ -29,6 +30,7 @@ class MainVerticle : CoroutineVerticle(), KoinComponent {
     val httpServer = vertx.createHttpServer()
 
     // Inject the httpRouter
+
     val httpRouter by inject<HttpRouter>()
 
     // Get the router
@@ -40,4 +42,19 @@ class MainVerticle : CoroutineVerticle(), KoinComponent {
 
       println("Verticle Running")
     }
+
+  // This is needed to make coroutines work. Don't worry about how it works for now.
+  private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {
+    handler { ctx ->
+      launch(ctx.vertx().dispatcher()) {
+        try {
+          fn(ctx)
+        } catch (e: Throwable) {
+          ctx.fail(e)
+        }
+      }
+    }
+  }
 }
+
+

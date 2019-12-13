@@ -15,6 +15,7 @@ import varilla.joseph.growintandem.http.HttpRouter
 import varilla.joseph.growintandem.modules.application.ApplicationServiceModules
 import varilla.joseph.growintandem.modules.application.getVertxModule
 import varilla.joseph.growintandem.modules.domain.plants.domainService.PlantDomainServiceModules
+import varilla.joseph.growintandem.modules.domain.plants.objectRepo.PlantObjectRepoModules
 import varilla.joseph.growintandem.modules.http.HttpRouterModules
 
 class MainVerticle : CoroutineVerticle(), KoinComponent {
@@ -26,7 +27,8 @@ class MainVerticle : CoroutineVerticle(), KoinComponent {
     startKoin {
       modules(listOf<Module>(
         getVertxModule(Vertx.vertx(), coroutineContext),
-        HttpRouterModules, ApplicationServiceModules, PlantDomainServiceModules))
+        HttpRouterModules, ApplicationServiceModules,
+        PlantDomainServiceModules, PlantObjectRepoModules))
     }
 
     // Create the httpServer

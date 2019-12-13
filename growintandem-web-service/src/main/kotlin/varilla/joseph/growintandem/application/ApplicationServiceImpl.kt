@@ -26,7 +26,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
 
   override suspend fun getPlantById(id: String): JsonObject {
     try {
-      val plant = plantDomainService.getPlantById("id")
+      val plant = plantDomainService.getPlantById(id)
       return plant.toJsonObject()
 
     } catch (throwable: Throwable) {

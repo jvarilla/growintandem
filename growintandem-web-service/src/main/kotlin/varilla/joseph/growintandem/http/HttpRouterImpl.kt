@@ -44,13 +44,13 @@ class HttpRouterImpl(private val vertx : Vertx,
 
 
     // Add Routes
-    router.get("$apiBase1/plant").coroutineHandler(this::getPlantsHandler)
-    router.get("$apiBase1/plant/:id").coroutineHandler(this::getPlantHandler)
+    router.get("$apiBase1/plant").coroutineHandler(this::getPlantsListHandler)
+    router.get("$apiBase1/plant/:id").coroutineHandler(this::getPlantByIdHandler)
 
     return router
   }
 
-  override suspend fun getPlantsHandler(event :RoutingContext) {
+  override suspend fun getPlantsListHandler(event :RoutingContext) {
 
     // Get the plants list from the application service
     val plants = applicationService.getPlantsList()
@@ -64,9 +64,10 @@ class HttpRouterImpl(private val vertx : Vertx,
     response.sendAsJSONWithStatusCode(msg, 200)
   }
 
-  override suspend fun getPlantHandler(event :RoutingContext) {
+  override suspend fun getPlantByIdHandler(event :RoutingContext) {
     // Get the plants by id from the application service
-    val plant = applicationService.getPlantById("id") //Plant("123", "Money Tree", 14).toJsonObject()
+    val id = event.request().getParam("id") ?: "id"
+    val plant = applicationService.getPlantById(id)
     val msg = Json.encodePrettily(plant)
     event.response().sendAsJSONWithStatusCode(msg, 200)
   }

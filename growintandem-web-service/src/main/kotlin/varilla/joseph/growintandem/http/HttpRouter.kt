@@ -13,12 +13,12 @@ interface HttpRouter :KoinComponent {
   /**
    * Returns all the plants in the system
    */
-  suspend fun getPlantsHandler(event :RoutingContext): Unit;
+  suspend fun getPlantsListHandler(event :RoutingContext): Unit;
 
   /**
    * Returns a plant with a specific id
    */
-  suspend fun getPlantHandler(event :RoutingContext): Unit;
+  suspend fun getPlantByIdHandler(event :RoutingContext): Unit;
 
 
 

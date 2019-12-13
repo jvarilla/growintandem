@@ -1,36 +1,41 @@
 package varilla.joseph.growintandem
 
-import io.vertx.core.AbstractVerticle
-import io.vertx.core.Promise
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import org.koin.core.KoinComponent
+import org.koin.core.context.startKoin
+import org.koin.core.inject
+import org.koin.core.module.Module
+import varilla.joseph.growintandem.http.HttpRouter
+import varilla.joseph.growintandem.modules.application.VertxModule
+import varilla.joseph.growintandem.modules.http.HttpRouterModules
 
-class MainVerticle : CoroutineVerticle() {
+class MainVerticle : CoroutineVerticle(), KoinComponent {
 
   override suspend fun start() {
-    val vertx = this.vertx
 
+    // Declare modules and build dependency trees
+    startKoin {
+      modules(listOf<Module>(VertxModule, HttpRouterModules))
+    }
+
+    // Inject the vertx context
+    val vertx by inject<Vertx>()
+
+    // Create the httpServer
     val httpServer = vertx.createHttpServer()
-    val router = Router.router(vertx)
 
-    // Add body parsing capability to router
-    router.route().handler(BodyHandler.create())
+    // Inject the httpRouter
+    val httpRouter by inject<HttpRouter>()
 
-    // API v1 base
-    val apiBase1 = "/api/v1"
+    // Get the router
+    val router = httpRouter.getRouter() // Router.router(vertx)
 
-    // Default Route
-    router.get("$apiBase1")
-      .handler{ routingContext: RoutingContext ->
-        val response = routingContext.response()
-        response.putHeader("content-type", "text/plain")
-        response.end("Hello from Vert.x")
-      }
-
-      httpServer.requestHandler(router)
+    // Start the http server with the router
+    httpServer.requestHandler(router)
        .listen(7777)
 
       println("Verticle Running")

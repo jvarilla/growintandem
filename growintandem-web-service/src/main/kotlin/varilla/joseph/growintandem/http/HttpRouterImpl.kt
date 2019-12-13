@@ -13,12 +13,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
+import org.koin.core.inject
+import varilla.joseph.growintandem.application.ApplicationService
 import varilla.joseph.growintandem.utils.http.sendAsJSONWithStatusCode
 import varilla.joseph.growintandem.utils.models.Plant
 import kotlin.coroutines.CoroutineContext
 
 class HttpRouterImpl(private val vertx : Vertx,
                      private val coroutineContext :CoroutineContext) : HttpRouter, KoinComponent {
+
+  private val applicationService by inject<ApplicationService>()
   private val coroutineScope = CoroutineScope(coroutineContext)
 
   override suspend fun getRouter(): Router {
@@ -39,22 +43,30 @@ class HttpRouterImpl(private val vertx : Vertx,
       }
 
 
-      router.get("$apiBase1/plant").coroutineHandler(this::getPlantsHandler)
-      router.get("$apiBase1/plant/:id").coroutineHandler(this::getPlantHandler)
+    // Add Routes
+    router.get("$apiBase1/plant").coroutineHandler(this::getPlantsHandler)
+    router.get("$apiBase1/plant/:id").coroutineHandler(this::getPlantHandler)
+
     return router
   }
 
   override suspend fun getPlantsHandler(event :RoutingContext) {
-    val plant = Plant("123", "Money Tree", 14).toJsonObject()
-    val plants = listOf<JsonObject>(plant, plant, plant)
+
+    // Get the plants list from the application service
+    val plants = applicationService.getPlantsList()
+
+    // Serialize it
     val msg = Json.encodePrettily(plants)
 
     val response = event.response()
+
+    // Send the message
     response.sendAsJSONWithStatusCode(msg, 200)
   }
 
   override suspend fun getPlantHandler(event :RoutingContext) {
-    val plant = Plant("123", "Money Tree", 14).toJsonObject()
+    // Get the plants by id from the application service
+    val plant = applicationService.getPlantById("id") //Plant("123", "Money Tree", 14).toJsonObject()
     val msg = Json.encodePrettily(plant)
     event.response().sendAsJSONWithStatusCode(msg, 200)
   }

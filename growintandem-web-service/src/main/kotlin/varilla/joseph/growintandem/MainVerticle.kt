@@ -12,15 +12,19 @@ import org.koin.core.context.startKoin
 import org.koin.core.inject
 import org.koin.core.module.Module
 import varilla.joseph.growintandem.http.HttpRouter
-import varilla.joseph.growintandem.modules.application.VertxModule
+import varilla.joseph.growintandem.modules.application.getVertxModule
 import varilla.joseph.growintandem.modules.http.HttpRouterModules
 
 class MainVerticle : CoroutineVerticle(), KoinComponent {
-
   override suspend fun start() {
-    this.coroutineContext
-    CoroutineScope(this.coroutineContext)
 
+    val coroutineContext = this.coroutineContext
+
+    // Declare modules and build dependency trees
+    startKoin {
+      modules(listOf<Module>(
+        getVertxModule(Vertx.vertx(), coroutineContext), HttpRouterModules))
+    }
 
     // Create the httpServer
     val httpServer = vertx.createHttpServer()

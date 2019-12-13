@@ -27,7 +27,7 @@ application {
 }
 
 
-def mainVerticleName = 'com.example.MainVerticle'
+def mainVerticleName = 'varilla.joseph.growintandem.MainVerticle'
 def watchForChange = 'src/**/*'
 def doOnChange = './gradlew classes'
 

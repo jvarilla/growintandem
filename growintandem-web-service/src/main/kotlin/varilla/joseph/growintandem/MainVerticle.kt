@@ -23,7 +23,7 @@ class MainVerticle : CoroutineVerticle() {
     val apiBase1 = "/api/v1"
 
     // Default Route
-    router.get("$apiBase1/")
+    router.get("$apiBase1")
       .handler{ routingContext: RoutingContext ->
         val response = routingContext.response()
         response.putHeader("content-type", "text/plain")

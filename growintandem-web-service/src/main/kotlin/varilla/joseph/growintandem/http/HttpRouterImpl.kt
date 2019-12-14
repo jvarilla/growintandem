@@ -15,8 +15,9 @@ import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import varilla.joseph.growintandem.application.ApplicationService
-import varilla.joseph.growintandem.utils.http.sendAsJSONWithStatusCode
+import varilla.joseph.growintandem.utils.http.*
 import varilla.joseph.growintandem.utils.models.Plant
+import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
 class HttpRouterImpl(private val vertx : Vertx,
@@ -52,25 +53,64 @@ class HttpRouterImpl(private val vertx : Vertx,
 
   override suspend fun getPlantsListHandler(event :RoutingContext) {
 
-    // Get the plants list from the application service
-    val plants = applicationService.getPlantsList()
+    var request = event.request()
+    var response = event.response()
 
-    // Serialize it
-    val msg = Json.encodePrettily(plants)
+    try {
+      // Get the plants list from the application service
+      val plants = applicationService.getPlantsList()
 
-    val response = event.response()
+      // Serialize it
+      val msg = Json.encodePrettily(plants)
 
-    // Send the message
-    response.sendAsJSONWithStatusCode(msg, 200)
+      // Send the message
+      response.sendAsJSONWithStatusCode(msg, 200)
+    } catch (reqErrorException :RequestErrorException) {
+
+      // Send the request error message
+      response.sendAsJSONWithStatusCode(
+          Json.encodePrettily(reqErrorException.toErrorMessageObj()), reqErrorException.statusCode)
+    } catch(throwable :Throwable) {
+        when(throwable) {
+          else -> { // If unknown send 500 error
+            response.sendAsJSONWithStatusCode(
+              Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
+              SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
+        }
+    }
   }
 
   override suspend fun getPlantByIdHandler(event :RoutingContext) {
-    // Get the plants by id from the application service
-    val id = event.request().getParam("id") ?: "id"
-    val plant = applicationService.getPlantById(id)
-    val msg = Json.encodePrettily(plant)
-    event.response().sendAsJSONWithStatusCode(msg, 200)
+
+    val request = event.request()
+    val response = event.response()
+
+    try {
+
+      // Get the plants by id from the application service
+      val id = request.getParam("id") ?: "id"
+      val plant = applicationService.getPlantById(id)
+      val msg = Json.encodePrettily(plant)
+      event.response().sendAsJSONWithStatusCode(msg, 200)
+
+    } catch (reqErrorException :RequestErrorException) {
+
+      // Send any identified request error
+      response.sendAsJSONWithStatusCode(
+        Json.encodePrettily(reqErrorException.toErrorMessageObj()), reqErrorException.statusCode)
+
+    } catch(throwable :Throwable) {
+
+      when(throwable) {
+        else -> { // Otherwise send 500 error
+          response.sendAsJSONWithStatusCode(
+            Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
+            SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
+      }
+    }
   }
+
+
 
   // This is needed to make coroutines work. Don't worry about how it works for now.
   private fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit) {

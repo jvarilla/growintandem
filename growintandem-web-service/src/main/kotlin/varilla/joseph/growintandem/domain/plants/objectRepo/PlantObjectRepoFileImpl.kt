@@ -1,6 +1,7 @@
 package varilla.joseph.growintandem.domain.plants.objectRepo
 
 import org.koin.core.KoinComponent
+import varilla.joseph.growintandem.utils.domain.PlantNotFoundException
 import varilla.joseph.growintandem.utils.models.Plant
 
 class PlantObjectRepoFileImpl :PlantObjectRepo , KoinComponent {
@@ -12,15 +13,21 @@ class PlantObjectRepoFileImpl :PlantObjectRepo , KoinComponent {
 
   override suspend fun getPlantsList(): List<Plant> {
       try {
+        // Return the list of all plants
         return plantMap.values.toList()
+
       } catch(throwable :Throwable) {
+
         throw throwable
+
       }
   }
 
   override suspend fun getPlantById(id :String): Plant {
       try {
-          return plantMap.get(id) ?: throw Exception()
+          // Get the plant by id from data store otherwise thrown 404 not found exception
+          return plantMap[id] ?: throw PlantNotFoundException()
+
       } catch (throwable :Throwable) {
         throw throwable
       }

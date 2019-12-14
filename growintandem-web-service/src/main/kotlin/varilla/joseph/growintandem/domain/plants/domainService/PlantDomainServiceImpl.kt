@@ -11,7 +11,7 @@ class PlantDomainServiceImpl :PlantDomainService, KoinComponent {
 
   override suspend fun getPlantsList(): List<Plant> {
     try {
-
+      // Get the plant list from the obj repo
       return plantObjectRepo.getPlantsList()
 
     } catch (throwable :Throwable) {
@@ -22,12 +22,11 @@ class PlantDomainServiceImpl :PlantDomainService, KoinComponent {
   override suspend fun getPlantById(id: String): Plant {
     try {
 
+      // Get a plant by id from the object repo
       return plantObjectRepo.getPlantById(id)
 
     } catch (throwable :Throwable) {
-
       throw throwable
-
     }
   }
 

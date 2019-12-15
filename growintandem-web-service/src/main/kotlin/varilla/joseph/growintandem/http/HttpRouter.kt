@@ -20,6 +20,12 @@ interface HttpRouter :KoinComponent {
    */
   suspend fun getPlantByIdHandler(event :RoutingContext): Unit;
 
+  /**
+   * Gets the watering schedule of a specific plant provided
+   * the id, the number of weeks, whether to allow weekends,
+   * and the start date
+   */
+  suspend fun getPlantWateringSchedule(event :RoutingContext) : Unit
 
 
 }

@@ -7,6 +7,7 @@ import org.koin.core.inject
 import varilla.joseph.growintandem.domain.plants.domainService.PlantDomainService
 import varilla.joseph.growintandem.utils.domain.PlantNotFoundException
 import varilla.joseph.growintandem.utils.http.RequestErrorException
+import java.time.Instant
 
 class ApplicationServiceImpl :ApplicationService, KoinComponent {
   private val plantDomainService by inject<PlantDomainService>()
@@ -40,6 +41,21 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
           is PlantNotFoundException -> throw RequestErrorException(404, "Plant Not Found")
           else -> throw throwable
         }
+    }
+  }
+
+
+  override suspend fun getPlantWateringSchedule(id :String, startDate : Instant,
+                                                numWeeks :Int, allowWeekends :Boolean) : JsonObject {
+    try {
+      // Get the plants watering schedule
+      return plantDomainService.getPlantWateringSchedule(id, startDate, numWeeks, allowWeekends).toJsonObject()
+
+    } catch (throwable: Throwable) {
+      when(throwable) {
+        is PlantNotFoundException -> throw RequestErrorException(404, "Plant Not Found")
+        else -> throw throwable
+      }
     }
   }
 

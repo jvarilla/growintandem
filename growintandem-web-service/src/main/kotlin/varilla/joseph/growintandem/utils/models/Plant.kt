@@ -3,6 +3,7 @@ package varilla.joseph.growintandem.utils.models
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.jsonObjectOf
 import org.omg.CORBA.DynAnyPackage.Invalid
+import java.time.Instant
 
 data class Plant (var id:String, var name:String, var waterEveryNumDays :Int ) {
   fun toJsonObject() : JsonObject {
@@ -28,3 +29,14 @@ fun JsonObject.toPlant() :Plant {
 }
 
 class InvalidPlantException :Exception()
+
+
+data class PlantWateringSchedule(var plantId:String, var plant :Plant, var wateringSchedule :List<Instant>) {
+  fun toJsonObject() :JsonObject {
+    return jsonObjectOf(
+      "plant_id" to this.plantId,
+      "plant" to this.plant.toJsonObject(),
+      "watering_schedule" to this.wateringSchedule
+    )
+  }
+}

@@ -50,7 +50,8 @@ class HttpRouterImpl(private val vertx : Vertx,
     router.get("$apiBase1/plants").coroutineHandler(this::getPlantsListHandler)
     router.get("$apiBase1/plants/:id").coroutineHandler(this::getPlantByIdHandler)
 
-    // Example host:port/api/v1/plants/123/watering-schedule?weeks=12&startdate=2003-11-20T11:11:11Z&allowweekends=false
+    // Example:
+    // host:port/api/v1/plants/123/watering-schedule?weeks=12&start-date=2003-11-20T11:11:11Z&allow-weekends=false
     router.get("$apiBase1/plants/:id/watering-schedule").coroutineHandler(this::getPlantWateringSchedule)
     return router
   }
@@ -121,21 +122,29 @@ class HttpRouterImpl(private val vertx : Vertx,
     var response = event.response()
 
     try {
-
-      // TODO: Fix so that missing parameters are accounted for
-
       // Get the query string parameters
       val plantId = request.getParam("id").trim().toLowerCase()
 
-      // Get the number of weeks to get the schedule for TODO: default to 1 week if not specified
-      val numWeeksToGetScheduleFor = Integer.parseInt(request.getParam("weeks").trim())
+      // Get the number of weeks to get the schedule for default to 1 week if not specified
+      val numWeeksToGetScheduleFor = Integer.parseInt(
+        ((request.getParam("weeks") ?: "1").trim()))
 
       // Parse the start date but default to today's date
-      val scheduleStartDate = Instant.parse(request.getParam("startdate").trim()) ?: Instant.now()
+      val scheduleStartDateString = (request.getParam("start-date") ?: "").trim()
 
-      // Make alloweekends false by default if not true
+      // Get the instant
+      var scheduleStartDate :Instant
+      // If the length is less than 1 it means it was null so set the default to current time
+      scheduleStartDate =
+        if (scheduleStartDateString.isEmpty()) {
+          Instant.now()
+      } else {
+          Instant.parse(scheduleStartDateString)
+      }
+
+      // Make allow-weekends false by default if not true
       val scheduleForWeekends =
-        request.getParam("allowweekends").trim().toLowerCase() == "true"
+        (request.getParam("allow-weekends") ?: "false" ).trim().toLowerCase() == "true"
 
 
       // Get the plants list from the application service
@@ -143,27 +152,36 @@ class HttpRouterImpl(private val vertx : Vertx,
       val receivedParams = jsonObjectOf(
         "id" to plantId,
         "weeks" to numWeeksToGetScheduleFor,
-        "startdate" to scheduleStartDate,
-        "allowweekends" to scheduleForWeekends
+        "start-date" to scheduleStartDate,
+        "allow-weekends" to scheduleForWeekends
       )
 
+
+      val wateringSchedule = applicationService.getPlantWateringSchedule(
+        id = plantId,
+        startDate = scheduleStartDate,
+        numWeeks = numWeeksToGetScheduleFor,
+        allowWeekends = scheduleForWeekends
+      )
+
+
       // Serialize it
-      val msg = Json.encodePrettily(receivedParams)
+      val msg = Json.encodePrettily(wateringSchedule)
 
       // Send the message
       response.sendAsJSONWithStatusCode(msg, 200)
     } catch (reqErrorException :RequestErrorException) {
-
       // Send the request error message
       response.sendAsJSONWithStatusCode(
         Json.encodePrettily(reqErrorException.toErrorMessageObj()), reqErrorException.statusCode)
     } catch(throwable :Throwable) {
-      when(throwable) {
-        else -> { // If unknown send 500 error
-          response.sendAsJSONWithStatusCode(
-            Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
-            SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
-      }
+      println(throwable)
+        when(throwable) {
+          else -> { // If unknown send 500 error
+            response.sendAsJSONWithStatusCode(
+              Json.encodePrettily(SERVER_ERROR_MESSAGE_OBJECT),
+              SERVER_ERROR_MESSAGE_OBJECT.statusCode) }
+        }
     }
   }
 

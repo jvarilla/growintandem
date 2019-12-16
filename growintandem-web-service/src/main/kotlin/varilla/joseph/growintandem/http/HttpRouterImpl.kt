@@ -156,13 +156,22 @@ class HttpRouterImpl(private val vertx : Vertx,
         "allow-weekends" to scheduleForWeekends
       )
 
+      val wateringSchedule :Any
 
-      val wateringSchedule = applicationService.getPlantWateringSchedule(
-        id = plantId,
-        startDate = scheduleStartDate,
-        numWeeks = numWeeksToGetScheduleFor,
-        allowWeekends = scheduleForWeekends
-      )
+      wateringSchedule = if (plantId == "all") {
+        applicationService.getAllPlantWateringSchedules(
+          startDate = scheduleStartDate,
+          numWeeks = numWeeksToGetScheduleFor,
+          allowWeekends = scheduleForWeekends
+          )
+      } else {
+        applicationService.getPlantWateringSchedule(
+          id = plantId,
+          startDate = scheduleStartDate,
+          numWeeks = numWeeksToGetScheduleFor,
+          allowWeekends = scheduleForWeekends
+          )
+      }
 
 
       // Serialize it

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import WateringScheduleWeek from './WateringScheduleWeek/WateringScheduleWeek'
 const API_BASE = 'http://localhost:7777/api/v1'
 
 class WateringScheduleCalendar extends React.Component {
@@ -12,13 +12,21 @@ class WateringScheduleCalendar extends React.Component {
     } 
 
     
-    loadWeekItems = () => {
+    loadWateringWeeks = () => {
         try {
             return (
                 <div>
                 {
                     this.state.calendarSchedule.weeks.map((week, idx) => {
-                        return( <div key={idx}> {week.startDate} | Week: {week.weekNum} </div>)
+                        return( 
+                            <div>
+                                <h2>{week.weekNum}</h2>
+                                <WateringScheduleWeek
+                                    key = {idx}
+                                    weekSchedule = {week}
+                                />
+                            </div>
+                            )
                 })
              }
                 </div>)
@@ -38,9 +46,9 @@ class WateringScheduleCalendar extends React.Component {
 
     render() {
         return(
-            <div>
+            <div className="WateringScheduleCalendar">
                 {
-                   this.loadWeekItems()
+                   this.loadWateringWeeks()
                 }
             </div>
         )

@@ -154,15 +154,15 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
 
             // Increment the week counter
             weekCounter++
+
+            // Make the week start date equal to the next day (sunday)
+            weekStartDate = currentDate.plus(Duration.ofDays(1L))
           }
 
           // Then reset the list of plants to water on the current day
           plantWateringScheduleDayPlantsList = mutableListOf<PlantWateringDate>()
 
-
-
-          // Make the week start date equal to the next day (sunday)
-          weekStartDate = currentDate.plus(Duration.ofDays(1L))
+          
 
           // Advance the currentDate by one day
           currentDate = currentDate.plus(Duration.ofDays(1L))

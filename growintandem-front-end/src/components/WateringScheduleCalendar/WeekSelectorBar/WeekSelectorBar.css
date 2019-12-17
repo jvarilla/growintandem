@@ -1,0 +1,12 @@
+.WeekSelectorBar {
+    display: flex;
+    background-color: var(--tertiary-bg-color); 
+    
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.changeWeekButton {
+    width: 0.4em;
+    background-color: aquamarine;
+}

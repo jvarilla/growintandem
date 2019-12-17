@@ -1,0 +1,5 @@
+.WateringScheduleWeek {
+    background: var("--off-white");
+}
+
+.WateringScheduleWeek:nth-odd() {background: var("--silver");}

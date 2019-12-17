@@ -1,6 +1,5 @@
 import React from 'react'
 import WateringScheduleWeek from './WateringScheduleWeek/WateringScheduleWeek'
-
 import './WateringScheduleCalendar.css'
 import WeekSelectorBar from './WeekSelectorBar/WeekSelectorBar'
 
@@ -25,7 +24,6 @@ class WateringScheduleCalendar extends React.Component {
         date = new Date(date)
         return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
     }
-
 
     onGoToPreviousWeek = (event) => {
         let newCurrentWeek = this.state.currentWeek
@@ -78,7 +76,6 @@ class WateringScheduleCalendar extends React.Component {
                                     key = {idx}
                                     weekSchedule = {week}
                                     currentWeekNum = {this.state.currentWeek}
-
                                 />
                             </div>
                             )
@@ -109,7 +106,6 @@ class WateringScheduleCalendar extends React.Component {
           this.setState({calendarSchedule: responseObj})
         })
       }
-
 
     render() {
         return(

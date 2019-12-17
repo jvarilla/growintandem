@@ -1,4 +1,3 @@
-
 :root {
   --main-bg-color: #81c784;
   --secondary-bg-color: #519657 ;
@@ -13,7 +12,8 @@
   --secondary-font-color: #000000;
 }
 
-
+/* 
+var(--tertiary-bg-color); */
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -21,7 +21,6 @@ body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
 }
 
 code {

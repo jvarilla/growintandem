@@ -1,9 +1,7 @@
 import React from 'react'
-
 import WateringScheduleDay from '../WateringScheduleDay/WateringScheduleDay'
 import './WateringScheduleWeek.css'
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
 
 class WateringScheduleWeek extends React.Component {
     constructor(props) {
@@ -13,11 +11,10 @@ class WateringScheduleWeek extends React.Component {
         }
     } 
 
-    //Comment
+    
     loadWateringDays = () => {
         try {
             return (
-
                 <div className="WateringScheduleWeek">
                 {
                     this.state.weekSchedule.days.map((day, idx) => {
@@ -28,7 +25,6 @@ class WateringScheduleWeek extends React.Component {
                                 dayOfWeek = {daysOfWeek[day.dayOfWeek]}
                                 date = {day.date}
                             />)
-
                 })
              }
                 </div>)

@@ -1,19 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import WateringSchedule from './components/WateringSchedule/WateringSchedule';
-import Plant from './components/Plant/Plant';
 import Navigation from './components/Navigation/Navigation';
-import PlantView from './components/Views/PlantView/PlantView'
-import DailyView from './components/Views/DailyView/DailyView';
 import WateringScheduleCalendar from './components/WateringScheduleCalendar/WateringScheduleCalendar';
-const API_BASE = 'http://localhost:7777/api/v1'
-const ALLOW_WEEKENDS_DEFAULT_SETTING = "false"
-const SCHEDULE_WEEKS_DURATION_DEFAULT_SETTING = 12
+
 
 // TODO: The default start date for the schedule is next Monday per the requirements
-let today = Date.now()
-const START_DATE_DURATION_DEFAULT_SETTING = Date.now() 
+let today = new Date(Date.now())
+
+// Next Monday
+const START_DATE_DURATION_DEFAULT_SETTING = 
+  today.setDate(today.getDate() + (1 + 7 - today.getDay()) % 7).toString();
 
 
 
@@ -27,15 +22,7 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // Get all the plant watering schedules
-    fetch(`${API_BASE}/plants/all/watering-schedule?weeks=12&start-date=2003-11-20T11:11:11Z&allow-weekends=true`)
-    .then(response => response.json())
-    .then(responseObj => {
-      console.log(responseObj)
-      this.setState({calendarSchedule: responseObj})
-    })
-  }
+
 
   onRouteChange = (route) => {
     this.setState({route: route});
@@ -47,31 +34,16 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        
         <Navigation onRouteChange={this.onRouteChange} />
-      
+        
         <WateringScheduleCalendar 
-        route={this.state.route}/>
+          calendarSchedule = {this.state.calendarSchedule}
+          route={this.state.route}/>
       </div>
     );
   }
   
 }
 
-// <header className="App-header">
-        
-      
-    
-// </header>
-// { JSON.stringify(this.state.calendarSchedule) }
 export default App;
-
-//  { this.displayView(this.state.route) }
-// { 
-//   this.state.plants.map((plant, idx) => {
-//     return  (
-//       <WateringSchedule 
-//         key = { idx }
-//         schedule={this.state.wateringSchedule[plant.id]} 
-//       />);
-//   })   
-// }

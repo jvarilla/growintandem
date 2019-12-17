@@ -1,0 +1,11 @@
+.WateringScheduleCalendar {
+    max-width: 80vw;
+    padding: 2.5% 2%;
+}
+
+.WateringScheduleCalendar:nth-child(even) {
+    background: white;
+}
+.WateringScheduleCalendar:nth-child(odd) {
+    background: var("--silver");
+}

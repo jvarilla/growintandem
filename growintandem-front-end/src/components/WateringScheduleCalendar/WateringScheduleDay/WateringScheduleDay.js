@@ -1,4 +1,5 @@
 import React from 'react'
+import './WateringScheduleDay.css'
 
 const daysOfWeek = ['Not a day', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 class WateringScheduleDay extends React.Component {
@@ -6,7 +7,7 @@ class WateringScheduleDay extends React.Component {
         super(props)
         this.state = {
             plantsToWater: props.plantsToWater || [],
-            dayOfWeek: "Sun",
+            dayOfWeek: props.dayOfWeek || "Sun",
             date: props.date
         }
     } 
@@ -20,17 +21,17 @@ class WateringScheduleDay extends React.Component {
             if (this.state.plantsToWater.length < 1) {
                 return(<div>
                         <h4>{this.state.dayOfWeek} -  {this.getReadableDate(this.state.date)}</h4>
-                        <p>You're all good, there are no plant to water</p>
+                        <p>No plants to water, you're free!</p>
                         </div>)
             } else {
                 return (
                     <div>
                     <h4>{this.state.dayOfWeek} -  {this.getReadableDate(this.state.date)}</h4>
-                    <p>{
+                    {
                         this.state.plantsToWater.map((plant, idx) => {
-                            return( <div key={idx}> {plant.plantName} </div>)
+                            return( <div className="WateringScheduleItem" key={idx}> {plant.plantName} </div>)
                     })
-                 }</p>
+                 }
                     </div>)
             }
         } catch(err) {

@@ -156,16 +156,24 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
             weekCounter++
 
             // Make the week start date equal to the next day (sunday)
+<<<<<<< HEAD
             weekStartDate = currentDate.plus(Duration.ofDays(1L)) // Fixed
 
+=======
+            weekStartDate = currentDate.plus(Duration.ofDays(1L))
+>>>>>>> c5013f7252578ed450a06f08c95b9d17de9a0281
           }
 
           // Then reset the list of plants to water on the current day
           plantWateringScheduleDayPlantsList = mutableListOf<PlantWateringDate>()
+          
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c5013f7252578ed450a06f08c95b9d17de9a0281
           // Advance the currentDate by one day
           currentDate = currentDate.plus(Duration.ofDays(1L))
           currentDateInfo = currentDate.atZone(ZoneId.systemDefault())

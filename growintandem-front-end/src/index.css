@@ -1,10 +1,26 @@
+:root {
+  --main-bg-color: #81c784;
+  --secondary-bg-color: #519657 ;
+  --tertiary-bg-color: #b2fab4;
+  --silver: #E1E2E1;
+  --off-white: #F5F5F6;
+
+
+  --main-font-color: #FFFFFF;
+  --focused-bg-color: #B4D6D3; 
+  --focused-font-color: #333333;
+  --secondary-font-color: #000000;
+}
+
+/* 
+var(--tertiary-bg-color); */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {

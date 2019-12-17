@@ -164,6 +164,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
           
 
 
+
           // Advance the currentDate by one day
           currentDate = currentDate.plus(Duration.ofDays(1L))
           currentDateInfo = currentDate.atZone(ZoneId.systemDefault())

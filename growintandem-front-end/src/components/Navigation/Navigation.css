@@ -1,0 +1,12 @@
+nav {
+    display: flex;
+    min-width: 100vw;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 5%;
+    font-size: calc(10px + 1.25vmin);
+    color: white;
+    background-color: var(--main-bg-color); 
+    position: fixed;
+    box-shadow:  10px 5px 5px rgba(0, 0, 255, .2);
+}

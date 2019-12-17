@@ -1,0 +1,16 @@
+.WateringScheduleItem {
+    background-color: var(--secondary-bg-color); 
+    color: var(--off-white);
+    max-width: 30vw;
+    margin: 1%;
+    padding: 1.5%;
+    border-radius: 22px;
+}
+
+.WateringScheduleItem:hover {
+    background-color: var(--silver); 
+    color: black;
+    border-color: var(--secondary-bg-color); 
+    border-width: 1%;
+    border-style: dashed;
+}

@@ -131,7 +131,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
 
           // Check to see if this is a Saturday or last day of the schedule
           if (
-            currentDate.atZone(ZoneId.systemDefault()).dayOfWeek == DayOfWeek.SATURDAY
+            currentDateInfo.dayOfWeek == DayOfWeek.SUNDAY
             || Date.from(currentDate) == Date.from(scheduleEndDate)) {
 
             // If so then set the week end date to the current date (Saturday)

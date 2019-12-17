@@ -156,7 +156,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
             weekCounter++
 
             // Make the week start date equal to the next day (sunday)
-            weekStartDate = currentDate.plus(Duration.ofDays(1L))
+            weekStartDate = currentDate.plus(Duration.ofDays(1L)) // Fixed
 
           }
 

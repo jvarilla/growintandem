@@ -24,9 +24,12 @@ class WateringScheduleCalendar extends React.Component {
                     this.state.calendarSchedule.weeks.map((week, idx) => {
                         return( 
                             <div key = {idx}>
-                                <h3>{week.weekNum}: 
-                                {this.getReadableDate(week.startDate)}-{this.getReadableDate(week.endDate)}</h3>
-                                <WateringScheduleWeek
+                                <div style={{display:'flex', flexDirection: 'row', justifyContent: 'flex-start'}}> 
+                                    <h3> Week {week.weekNum}: 
+                                        {this.getReadableDate(week.startDate)}-{this.getReadableDate(week.endDate)}
+                                    </h3>
+                                </div>
+                                    <WateringScheduleWeek
                                     key = {idx}
                                     weekSchedule = {week}
                                 />

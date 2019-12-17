@@ -48,18 +48,20 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navigation onRouteChange={this.onRouteChange} />
-        <header className="App-header">
-        
+      
         <WateringScheduleCalendar 
-          route={this.state.route}/>
-    
-        </header>
-        
+        route={this.state.route}/>
       </div>
     );
   }
   
 }
+
+// <header className="App-header">
+        
+      
+    
+// </header>
 // { JSON.stringify(this.state.calendarSchedule) }
 export default App;
 

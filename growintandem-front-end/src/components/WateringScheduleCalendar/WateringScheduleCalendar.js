@@ -12,6 +12,10 @@ class WateringScheduleCalendar extends React.Component {
     } 
 
     
+    getReadableDate = (date) =>  {
+        date = new Date(date)
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+    }
     loadWateringWeeks = () => {
         try {
             return (
@@ -19,8 +23,9 @@ class WateringScheduleCalendar extends React.Component {
                 {
                     this.state.calendarSchedule.weeks.map((week, idx) => {
                         return( 
-                            <div>
-                                <h2>{week.weekNum}</h2>
+                            <div key = {idx}>
+                                <h3>{week.weekNum}: 
+                                {this.getReadableDate(week.startDate)}-{this.getReadableDate(week.endDate)}</h3>
                                 <WateringScheduleWeek
                                     key = {idx}
                                     weekSchedule = {week}

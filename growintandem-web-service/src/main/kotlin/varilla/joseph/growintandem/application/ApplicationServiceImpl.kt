@@ -161,8 +161,9 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
 
           // Then reset the list of plants to water on the current day
           plantWateringScheduleDayPlantsList = mutableListOf<PlantWateringDate>()
-
           
+
+
 
           // Advance the currentDate by one day
           currentDate = currentDate.plus(Duration.ofDays(1L))

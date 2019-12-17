@@ -3,7 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 import WateringSchedule from './components/WateringSchedule/WateringSchedule';
 import Plant from './components/Plant/Plant';
-
+import Navigation from './components/Navigation/Navigation';
+import PlantView from './components/Views/PlantView/PlantView'
+import DailyView from './components/Views/DailyView/DailyView';
+import WateringScheduleCalendar from './components/WateringScheduleCalendar/WateringScheduleCalendar';
 const API_BASE = 'http://localhost:7777/api/v1'
 const ALLOW_WEEKENDS_DEFAULT_SETTING = "false"
 const SCHEDULE_WEEKS_DURATION_DEFAULT_SETTING = 12
@@ -19,71 +22,48 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      plants: [],
-      wateringSchedule: []
+      route: 'plants',
+      calendarSchedule: {}
     }
   }
 
   componentDidMount() {
-    fetch(`${API_BASE}/plants/`)
+    // Get all the plant watering schedules
+    fetch(`${API_BASE}/plants/all/watering-schedule?weeks=12&start-date=2003-11-20T11:11:11Z&allow-weekends=true`)
     .then(response => response.json())
     .then(responseObj => {
       console.log(responseObj)
-      this.setState({plants: responseObj})
-      return responseObj
+      this.setState({calendarSchedule: responseObj})
     })
   }
 
+  onRouteChange = (route) => {
+    this.setState({route: route});
+  }
 
+ 
+
+  
   render() {
     return (
       <div className="App">
-      
-     
+        <Navigation onRouteChange={this.onRouteChange} />
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-         
-          {
-            this.state.plants.map((plant) => {
-              return (
-                <Plant 
-                  key={plant.id}
-                  id={plant.id}
-                  name={plant.name}
-                  waterEveryNumDays={plant.waterEveryNumDays}
-                  />
-              )
-            })
-          }
-
-          {
-            this.state.wateringSchedule.map((plantWateringSchedule, idx) => {
-              console.log('plant', plantWateringSchedule)
-              return <WateringSchedule 
-                key={idx}
-                schedule={plantWateringSchedule} />
-            })
-          }
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+        
+        <WateringScheduleCalendar 
+          route={this.state.route}/>
+    
         </header>
+        
       </div>
     );
   }
   
 }
-
+// { JSON.stringify(this.state.calendarSchedule) }
 export default App;
 
+//  { this.displayView(this.state.route) }
 // { 
 //   this.state.plants.map((plant, idx) => {
 //     return  (

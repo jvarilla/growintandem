@@ -131,7 +131,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
 
           // Check to see if this is a Saturday or last day of the schedule
           if (
-            currentDateInfo.dayOfWeek == DayOfWeek.SUNDAY
+            currentDateInfo.dayOfWeek == DayOfWeek.SATURDAY
             || Date.from(currentDate) == Date.from(scheduleEndDate)) {
 
             // If so then set the week end date to the current date (Saturday)
@@ -156,12 +156,9 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
             weekCounter++
 
             // Make the week start date equal to the next day (sunday)
-<<<<<<< HEAD
-            weekStartDate = currentDate.plus(Duration.ofDays(1L)) // Fixed
 
-=======
             weekStartDate = currentDate.plus(Duration.ofDays(1L))
->>>>>>> c5013f7252578ed450a06f08c95b9d17de9a0281
+
           }
 
           // Then reset the list of plants to water on the current day
@@ -169,11 +166,7 @@ class ApplicationServiceImpl :ApplicationService, KoinComponent {
           
 
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> c5013f7252578ed450a06f08c95b9d17de9a0281
           // Advance the currentDate by one day
           currentDate = currentDate.plus(Duration.ofDays(1L))
           currentDateInfo = currentDate.atZone(ZoneId.systemDefault())
